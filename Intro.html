@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Health Monitor | Crew Biometric & Assessment System</title>
+  <meta name="description" content="Futuristic astronaut health monitoring and biometric authentication application for crew of Starhawk.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2300010a' stroke='%233cf7e3' stroke-width='6'/><path d='M30 50 L45 35 L55 65 L70 50' fill='none' stroke='%23f378f1' stroke-width='6'/></svg>">
+</head>
+<body>
+
+  <!-- Dynamic Starfield and Nebula Background -->
+  <div class="background-container">
+    <canvas id="deep-space-stars-canvas"></canvas>
+    <div class="nebula-glow nebula-1"></div>
+    <div class="nebula-glow nebula-2"></div>
+    <div class="nebula-glow nebula-3"></div>
+  </div>
+
+  <div class="app-viewport">
+    
+    <!-- Top Mission Status & Sequence Navigation Bar -->
+    <header class="top-mission-bar">
+      <div class="mission-brand">
+        <div class="brand-insignia">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Antigravity Health Monitor</h1>
+          <div class="brand-sub">VESSEL: STARHAWK-VII // ORBIT: LEO-420KM // SYS_ONLINE</div>
+        </div>
+      </div>
+
+      <!-- Step Flow Navigation Controls -->
+      <nav class="step-nav-tracker" aria-label="Workflow Sequence">
+        <button class="step-pip active" data-goto-step="1" data-step="1" title="Go to Step 1">
+          <span class="pip-num">1</span>
+          <span class="pip-label">WELCOME</span>
+        </button>
+        <button class="step-pip" data-goto-step="2" data-step="2" title="Go to Step 2">
+          <span class="pip-num">2</span>
+          <span class="pip-label">VOICE SCAN</span>
+        </button>
+        <button class="step-pip" data-goto-step="3" data-step="3" title="Go to Step 3">
+          <span class="pip-num">3</span>
+          <span class="pip-label">BIOMETRICS</span>
+        </button>
+      </nav>
+
+      <!-- System Controls: Sound & Auto-advance -->
+      <div class="system-actions">
+        <button id="sound-toggle-btn" class="action-btn-pill" title="Toggle audio synthesis">
+          <span class="icon">🔇</span> AUDIO: MUTED
+        </button>
+        <button id="auto-toggle-btn" class="action-btn-pill active" title="Toggle automatic step advancement">
+          AUTO: ON
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Brushed Metallic Frame Enclosure -->
+    <main class="metallic-frame-enclosure" id="main-frame">
+      <!-- Metallic Corner Accent Brackets -->
+      <div class="corner-bracket corner-tl"></div>
+      <div class="corner-bracket corner-tr"></div>
+      <div class="corner-bracket corner-bl"></div>
+      <div class="corner-bracket corner-br"></div>
+
+      <!-- Metallic Telemetry Sub-header -->
+      <div class="frame-telemetry-header">
+        <div class="telemetry-left">
+          <span>AI CORE: NEURAL-08</span> // 
+          <span class="telemetry-node-tag">CIPHER: 256-QBIT</span>
+        </div>
+        <div class="telemetry-right">
+          <span>SECURITY STATUS: RESTRICTED LEVEL-4</span>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           STEP 1: INITIAL HOME / WELCOME SCREEN
+           ================================================================= -->
+      <section id="step-1-screen" class="screen-view active">
+        <!-- AI Glowing Voice Visualizer Wave -->
+        <div class="ai-visualizer-container">
+          <canvas id="step-1-wave-canvas" width="380" height="220"></canvas>
+          <div class="ai-status-ring-badge">
+            <span class="pulse-dot"></span>
+            <span>AI VOCAL SYNTHESIZER: ACTIVE</span>
+          </div>
+        </div>
+
+        <!-- Simulated Voice Greeting with Typing Text -->
+        <div class="welcome-text-container">
+          <div class="system-prefix-tag">SYSTEM TELEMETRY GREETING</div>
+          <h2 class="typewriter-headline">
+            <span id="welcome-typewriter"></span>
+            <span class="typewriter-cursor">_</span>
+          </h2>
+        </div>
+
+        <!-- Action Trigger Button -->
+        <div class="step-1-action-row">
+          <button id="activate-voice-btn" class="btn-primary-trigger">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="22"></line>
+            </svg>
+            <span>Activate Voice Recognition</span>
+          </button>
+          <div class="auto-countdown-label">
+            <span id="countdown-timer">Auto in 3s</span> (or click to advance)
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           STEP 2: ASTRONAUT VOICE TRIGGER
+           ================================================================= -->
+      <section id="step-2-screen" class="screen-view">
+        <!-- Live Audio Waveform Simulation Box -->
+        <div class="voice-waveform-box">
+          <div class="waveform-meta-header">
+            <span>INPUT: COMM-LINK FREQUENCY 142.85 MHz</span>
+            <span>SPECTRAL ANALYZER</span>
+          </div>
+          <canvas id="step-2-wave-canvas" width="620" height="130"></canvas>
+        </div>
+
+        <!-- Speech Caption Bubble -->
+        <div class="speech-caption-bubble">
+          <div id="voice-caption-text">
+            <span class="highlight-prefix">VOICE DETECTED:</span>
+            "Commander Kairo Chen reporting for health assessment."
+          </div>
+        </div>
+
+        <!-- Verifying Identity Progress Bar in Neon Cyan & Magenta -->
+        <div class="verification-progress-enclosure">
+          <div class="progress-labels-row">
+            <span>VERIFYING IDENTITY...</span>
+            <span id="verify-progress-percent">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="verify-progress-fill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Voice Telemetry Chips -->
+        <div class="voice-telemetry-chips">
+          <div class="telemetry-chip">SPECTRAL MATCH: <span>99.8%</span></div>
+          <div class="telemetry-chip">ACOUSTIC PITCH: <span>124 HZ</span></div>
+          <div class="telemetry-chip">VOCAL BIOPRINT: <span>AUTHENTIC</span></div>
+          <div class="telemetry-chip">LATENCY: <span>12 MS</span></div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           STEP 3: SPLIT-SCREEN BIOMETRIC RECOGNITION & LOGIN REVEAL
+           ================================================================= -->
+      <section id="step-3-screen" class="screen-view">
+        
+        <!-- LEFT PANEL: Biometric Visual Match -->
+        <div class="biometric-left-panel">
+          <!-- Identity Confirmed Badge -->
+          <div class="biometric-badge-banner">
+            <div class="confirmed-tag">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>IDENTITY CONFIRMED: CMDR. KAIRO CHEN</span>
+            </div>
+            <div class="biometric-id-hash">MATCH: 99.98%</div>
+          </div>
+
+          <!-- 3D Holographic Astronaut Wireframe Canvas Stage -->
+          <div class="hologram-stage-container" id="hologram-container">
+            <canvas id="hologram-astronaut-canvas"></canvas>
+            <div class="hologram-drag-hint">⟲ CLICK & DRAG TO ORBIT 3D HOLOGRAM</div>
+          </div>
+
+          <!-- Floating Medical Telemetry HUD Cluster -->
+          <div class="floating-medical-cluster">
+            <!-- Top HUD Row -->
+            <div class="hud-widget-row">
+              <!-- Lungs Hologram Card -->
+              <div class="hud-card lungs-card">
+                <div class="hud-title">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3cf7e3" stroke-width="2"><path d="M12 4v16m-4-8 4-4 4 4"/></svg>
+                  PULMONARY
+                </div>
+                <canvas id="lungs-canvas" width="100" height="60"></canvas>
+                <div style="font-family: var(--font-mono); font-size: 0.65rem; color: #3cf7e3; text-align: center;">14 BR/MIN (NOMINAL)</div>
+              </div>
+
+              <!-- DNA Double Helix Card -->
+              <div class="hud-card dna-card">
+                <div class="hud-title">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f378f1" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+                  GENOME
+                </div>
+                <canvas id="dna-canvas" width="86" height="80"></canvas>
+                <div style="font-family: var(--font-mono); font-size: 0.65rem; color: #f378f1; text-align: center;">GENOME: 100%</div>
+              </div>
+            </div>
+
+            <!-- Bottom HUD Row -->
+            <div class="hud-widget-row" style="margin-top: auto;">
+              <!-- Real-time ECG Heartbeat Oscilloscope -->
+              <div class="hud-card ecg-card">
+                <div class="ecg-stat-row">
+                  <div class="hud-title">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3cf7e3" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    CARDIAC TELEMETRY
+                  </div>
+                  <div class="ecg-bpm" id="ecg-bpm-readout">68 <span style="font-size: 0.7rem; color: var(--color-metallic-gray);">BPM</span></div>
+                </div>
+                <canvas id="ecg-canvas" width="196" height="48"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Vital Metrics Summary Strip -->
+          <div class="vitals-summary-strip">
+            <div class="vital-metric-cell">
+              <div class="label">SPO2 OXYGEN</div>
+              <div class="value cyan">99.4%</div>
+            </div>
+            <div class="vital-metric-cell">
+              <div class="label">CORE TEMP</div>
+              <div class="value">36.8°C</div>
+            </div>
+            <div class="vital-metric-cell">
+              <div class="label">BLOOD PRESS.</div>
+              <div class="value">118/76</div>
+            </div>
+            <div class="vital-metric-cell">
+              <div class="label">RADIATION</div>
+              <div class="value magenta">0.04 mSv</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT PANEL: Assessment & Access Frosted Glass Card -->
+        <div class="assessment-right-panel">
+          <div>
+            <!-- Header -->
+            <div class="frosted-header">
+              <div class="frosted-badge-row">
+                <span class="frosted-badge">BIOMETRIC CLEARANCE: LEVEL-4</span>
+                <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #64748b;">EXPIRY: 08H:00M</span>
+              </div>
+              <h2>Astronaut Health Monitor - Access</h2>
+            </div>
+
+            <!-- Pre-filled & Verified Astronaut ID Field -->
+            <div class="verified-field-box">
+              <div class="verified-field-content">
+                <span class="field-label">Pre-filled &amp; Verified Credential</span>
+                <span class="field-value">Astronaut ID: CMDR-KAIRO-02</span>
+              </div>
+              <div class="verified-stamp">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                VERIFIED
+              </div>
+            </div>
+
+            <!-- Status Readout Banner -->
+            <div class="assessment-status-banner">
+              --- INITIATING CREW HEALTH ASSESSMENT ---
+            </div>
+
+            <!-- Ordered Crew Roster List -->
+            <div class="crew-roster-list" id="crew-roster-list">
+              <!-- Dynamically populated via app.js -->
+            </div>
+          </div>
+
+          <!-- Access Actions & Primary Button -->
+          <div class="access-action-block">
+            <!-- Interactive Fingerprint Scanner Pad -->
+            <div class="fingerprint-scan-interactive" id="fingerprint-pad" title="Click or tap to scan fingerprint">
+              <div class="fingerprint-icon-box">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"></path>
+                  <path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"></path>
+                  <path d="M17.29 21.02c.12-.54.41-1.65.41-3.02 0-2.16-1.14-4.5-3.7-5"></path>
+                  <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path>
+                  <path d="M8.65 22c.21-.66.45-1.32.57-2"></path>
+                  <path d="M14 13.1a3 3 0 0 0 3-1.1"></path>
+                </svg>
+              </div>
+              <div class="fingerprint-meta">
+                <div class="fingerprint-label">Dermal Biometric Scanner</div>
+                <div class="fingerprint-status-text" id="fingerprint-status">Click to authenticate biometric touchpoint</div>
+              </div>
+            </div>
+
+            <!-- Primary Gradient Button (#2b5797 to #203354) with Fingerprint Icon -->
+            <button id="enter-dashboard-btn" class="btn-enter-dashboard">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"></path>
+                <path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"></path>
+                <path d="M17.29 21.02c.12-.54.41-1.65.41-3.02 0-2.16-1.14-4.5-3.7-5"></path>
+                <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path>
+                <path d="M8.65 22c.21-.66.45-1.32.57-2"></path>
+                <path d="M14 13.1a3 3 0 0 0 3-1.1"></path>
+              </svg>
+              <span>Enter Dashboard</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Extended Dashboard Telemetry Modal -->
+  <div class="dashboard-modal-backdrop" id="dashboard-modal">
+    <div class="dashboard-modal-window">
+      <div class="modal-header-row">
+        <div class="modal-title">
+          <h3>Starhawk Crew Telemetry Diagnostics HUD</h3>
+          <p>COMMANDER KAIRO CHEN // BIOMETRIC ASSESSMENT ACTIVE</p>
+        </div>
+        <button id="close-dashboard-btn" class="btn-close-modal">✕ CLOSE HUD</button>
+      </div>
+
+      <div class="dashboard-grid-content">
+        <div class="dash-card">
+          <h4>NEURO-COGNITIVE SYNC</h4>
+          <div class="vital-big">98.4%</div>
+          <div class="vital-status">● OPTIMAL RESPONSE LATENCY (180ms)</div>
+        </div>
+
+        <div class="dash-card">
+          <h4>EVA BIO-SUIT PRESSURE</h4>
+          <div class="vital-big">4.2 <span style="font-size: 1rem; color: #fff;">PSI</span></div>
+          <div class="vital-status">● NITROX / O2 EQUILIBRIUM STABLE</div>
+        </div>
+
+        <div class="dash-card">
+          <h4>MICROGRAVITY STRESS</h4>
+          <div class="vital-big">12 <span style="font-size: 1rem; color: #fff;">INDEX</span></div>
+          <div class="vital-status">● LOW MUSCULOSKELETAL FATIGUE</div>
+        </div>
+
+        <div class="dash-card">
+          <h4>CUMULATIVE MISSION RADIATION</h4>
+          <div class="vital-big" style="color: var(--color-magenta-pink);">0.28 <span style="font-size: 1rem; color: #fff;">mSv</span></div>
+          <div class="vital-status">● WELL WITHIN 20 mSv MISSION CEILING</div>
+        </div>
+
+        <div class="dash-card">
+          <h4>CARDIOPULMONARY STATUS</h4>
+          <div class="vital-big">68 <span style="font-size: 1rem; color: #fff;">BPM</span></div>
+          <div class="vital-status">● SINUS RHYTHM // VO2 MAX: 54.2</div>
+        </div>
+
+        <div class="dash-card">
+          <h4>MISSION CLEARANCE</h4>
+          <div class="vital-big" style="color: #10b981;">EVA-FIT</div>
+          <div class="vital-status">● CLEARED FOR AIRLOCK DEPLOYMENT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="hologram.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
